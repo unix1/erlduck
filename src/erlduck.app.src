@@ -12,5 +12,9 @@
                   ssl
                  ]},
   {mod, { erlduck, []}},
-  {env, []}
+  {env, [
+          {protocol, "https"},
+          {host, "api.duckduckgo.com"},
+          {port, "443"}
+        ]}
  ]}.
