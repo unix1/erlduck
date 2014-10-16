@@ -1,20 +1,11 @@
 {application, erlduck,
- [
-  {description, ""},
+ [{description, "DuckDuckGo Client in Erlang/OTP"},
   {vsn, "1.0.0"},
+  {modules, []},
   {registered, []},
-  {applications, [
-                  kernel,
+  {applications, [kernel,
                   stdlib,
-                  crypto,
-                  asn1,
-                  public_key,
-                  ssl
-                 ]},
-  {mod, { erlduck, []}},
-  {env, [
-          {protocol, "https"},
-          {host, "api.duckduckgo.com"},
-          {port, "443"}
-        ]}
+                  httpclient]},
+  {mod, {erlduck, []}},
+  {env, []}
  ]}.

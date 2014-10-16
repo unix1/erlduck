@@ -1,21 +1,23 @@
 -module(erlduck_sup).
--include("erlduck.hrl").
--export([start_link/1, init/1]).
+
 -behaviour(supervisor).
 
-start_link(DDG_Service) ->
-    supervisor:start_link({local, ?MODULE}, ?MODULE, [DDG_Service]).
+%% User functions
+-export([start_link/0]).
 
-init([DDG_Service]) ->
-    MaxRestart = 1,
-    MaxTime = 3600,
-    ChildSpec = {
-        erlduck_server,
-        {erlduck_server, start_link, [DDG_Service]},
-        temporary,
-        5000, % shutdown time
-        worker,
-        [erlduck_server]
-    },
-    {ok, {{simple_one_for_one, MaxRestart, MaxTime}, [ChildSpec]}}.
+%% Behavior callbacks
+-export([init/1]).
 
+%% ===================================================================
+%% User functions
+%% ===================================================================
+
+start_link() ->
+    supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+
+%% ===================================================================
+%% Behavior callbacks
+%% ===================================================================
+
+init([]) ->
+    {ok, {{one_for_one, 5, 10}, []}}.
