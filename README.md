@@ -13,27 +13,23 @@ In Erlang-ese: it's a simple OTP application that starts a simple_one_for_one su
 Installation
 ------------
 
-* compile
+* compile and make release
 
-      `rebar compile`
+      `make`
 
-* generate release
+* run tests (assumes connectivity to api.duckduckgo.com)
 
-      `cd rel`  
-      `rebar create-node nodeid=erlduck`  
-      `cd ..`  
-      `rebar generate`
+      `make tests`
 
 Play
 ----
 
 * run (and get console)
 
-      `sh rel/erlduck/bin/erlduck console`
+      `_rel/erlduck_release/bin/erlduck_release console`
 
 * play
 
-      `erlduck:search("DuckDuckGo").`
+      `erlduck:search(<<"DuckDuckGo">>).`
 
 * you should see raw output
-
