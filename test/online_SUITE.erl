@@ -10,6 +10,8 @@
 -export([end_per_testcase/2]).
 
 %% Tests
+-export([get_answer/1]).
+-export([get_answer_named/1]).
 -export([search/1]).
 -export([search_named/1]).
 
@@ -18,7 +20,9 @@
 %% ============================================================================
 
 all() ->
-    [search,
+    [get_answer,
+     get_answer_named,
+     search,
      search_named].
 
 init_per_suite(Config) ->
@@ -62,6 +66,14 @@ end_per_testcase(_, _Config) ->
 %% ============================================================================
 %% Tests
 %% ============================================================================
+
+get_answer(_) ->
+    Result = erlduck:get_answer(<<"duckduckgo">>),
+    true = is_binary(proplists:get_value(<<"Answer">>, Result)).
+
+get_answer_named(_) ->
+    Result = erlduck:get_answer(default, <<"duckduckgo">>),
+    true = is_binary(proplists:get_value(<<"Answer">>, Result)).
 
 search(_) ->
     {ok, search_results, _} = erlduck:search(<<"duckduckgo">>).

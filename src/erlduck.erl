@@ -9,6 +9,7 @@
 %% User functions
 -export([start/0]).
 -export([stop/0]).
+-export([get_answer/1, get_answer/2]).
 -export([search/1, search/2]).
 
 -define(DEFAULT_CONN, default).
@@ -57,6 +58,12 @@ stop() ->
     ok = application:stop(crypto),
     ok = application:stop(ranch),
     ok.
+
+get_answer(Question) ->
+    get_answer(?DEFAULT_CONN, Question).
+
+get_answer(Connection, Question) ->
+    erlduck_server:get_answer(Connection, Question).
 
 search(Term) ->
     search(?DEFAULT_CONN, Term).
