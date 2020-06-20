@@ -1,12 +1,10 @@
-.erlang.mk.packages.*
-.eunit
-*.o
-*.beam
+.idea
+.rebar3
+*.iml
 *.kdev4
 *.plt
-_rel
-deps
+_build
 ebin
 erl_crash.dump
 logs
-relx
+test/*.beam

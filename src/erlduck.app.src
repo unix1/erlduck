@@ -5,7 +5,15 @@
   {registered, []},
   {applications, [kernel,
                   stdlib,
+                  inets,
+                  crypto,
+                  asn1,
+                  public_key,
+                  ssl,
+                  gun,
+                  jsx,
+                  poolboy,
                   httpclient]},
-  {mod, {erlduck, []}},
+  {mod, {erlduck_app, []}},
   {env, []}
  ]}.

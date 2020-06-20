@@ -1,15 +1,27 @@
-PROJECT = erlduck
+REBAR3 = rebar3
 
-# Options
+all:
+	@$(REBAR3) do clean, compile, ct, dialyzer
 
-CT_SUITES = online
+compile:
+	@$(REBAR3) compile
 
-# Dependencies
+dialyze:
+	@$(REBAR3) dialyzer
 
-DEPS = httpclient jsx
-dep_httpclient = git https://github.com/unix1/httpclient.git
-dep_jsx = git https://github.com/talentdeficit/jsx.git
+deps:
+	@$(REBAR3) get-deps
 
-# Standard targets
+rel: all
+	@$(REBAR3) release
 
-include erlang.mk
+run:
+	@$(REBAR3) shell
+
+doc:
+	@$(REBAR3) edoc
+
+tests:
+	@$(REBAR3) ct --logdir logs/ct
+
+.PHONY: all compile dialyze deps rel run doc tests

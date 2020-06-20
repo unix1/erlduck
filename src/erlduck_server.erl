@@ -39,4 +39,4 @@ get_request(search, [SearchTerm], _Token) ->
 %% ============================================================================
 
 decode_response(RawResponse) ->
-    jsx:decode(RawResponse).
+    jsx:decode(RawResponse, [return_maps]).
