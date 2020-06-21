@@ -1,5 +1,8 @@
 # erlduck
 
+[![unix1](https://circleci.com/gh/unix1/erlduck.svg?style=shield)](https://circleci.com/gh/unix1/erlduck)
+[![unix1](https://img.shields.io/circleci/project/unix1/erlduck.png)](https://circleci.com/gh/unix1/erlduck)
+
 erlduck is a DuckDuckGo Instant Answers API client written in Erlang/OTP.
 
 ## Summary
