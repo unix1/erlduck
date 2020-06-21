@@ -1,6 +1,5 @@
 # erlduck
 
-[![unix1](https://circleci.com/gh/unix1/erlduck.svg?style=svg)](https://circleci.com/gh/unix1/erlduck)
 [![unix1](https://img.shields.io/circleci/project/unix1/erlduck)](https://circleci.com/gh/unix1/erlduck)
 [![unix1](https://img.shields.io/github/license/unix1/erlduck)](https://apache.org/licenses/LICENSE-2.0.html)
 
