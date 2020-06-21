@@ -1,10 +1,8 @@
-erlduck
-=======
+# erlduck
 
 erlduck is a DuckDuckGo Instant Answers API client written in Erlang/OTP.
 
-Summary
--------
+## Summary
 
 In a nutshell, erlduck is an HTTP client application that sends HTTP requests
 to api.duckduckgo.com and returns the result. It uses unix1/httpclient using
@@ -12,8 +10,11 @@ ninenines/gun as its HTTP backend. This means erlduck will keep configured
 number of workers (default 1) persistently connected to DuckDuckGo service
 for fast response times.
 
-Installation
-------------
+## Prerequisites
+
+* Erlang/OTP
+
+## Run
 
 * run in shell
 
@@ -27,8 +28,7 @@ make run
 make tests
 ```
 
-Play
-----
+## Play
 
 * after running in shell, you can play around with it
 
