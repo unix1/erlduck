@@ -1,6 +1,6 @@
 {application, erlduck,
  [{description, "DuckDuckGo Client in Erlang/OTP"},
-  {vsn, "1.0.0"},
+  {vsn, "0.1.0"},
   {modules, []},
   {registered, []},
   {applications, [kernel,
