@@ -26,35 +26,11 @@ all() ->
      search_named].
 
 init_per_suite(Config) ->
-    ok = application:load(erlduck),
-    [application:set_env(App, Key, Val) || {App, Key, Val} <-
-     [{erlduck, connections,
-       [{default,
-         [{protocol, "https"},
-          {host, "api.duckduckgo.com"},
-          {port, 443},
-          {user, <<>>},
-          {pass, <<>>},
-          {pool, erlduck_test_pool},
-          {http_backend, httpclient_http_gun}, % backend for login service
-          {login_handler, erlduck_login}, % authentication implementation
-          {service_handler, erlduck_server} % service implementation
-          ]}]},
-      {erlduck, service_pools,
-       [{erlduck_test_pool,
-         [ % size args
-           {size, 1}, % max pool size
-           {max_overflow, 0}], % max # of workers created if pool is empty
-         [ % worker args
-           {connection, default},
-           {http_backend, httpclient_http_gun}]}] % backend for service workers
-       }]
-    ],
-    ok = erlduck:start(),
+    {ok, _} = application:ensure_all_started(erlduck),
     Config.
 
 end_per_suite(_) ->
-    ok = erlduck:stop(),
+    ok = application:stop(erlduck),
     ok.
 
 init_per_testcase(_, Config) ->
@@ -69,11 +45,13 @@ end_per_testcase(_, _Config) ->
 
 get_answer(_) ->
     Result = erlduck:get_answer(<<"duckduckgo">>),
-    true = is_binary(proplists:get_value(<<"Answer">>, Result)).
+    true = is_binary(maps:get(<<"Answer">>, Result)),
+    true = is_binary(maps:get(<<"Abstract">>, Result)).
 
 get_answer_named(_) ->
     Result = erlduck:get_answer(default, <<"duckduckgo">>),
-    true = is_binary(proplists:get_value(<<"Answer">>, Result)).
+    true = is_binary(maps:get(<<"Answer">>, Result)),
+    true = is_binary(maps:get(<<"Abstract">>, Result)).
 
 search(_) ->
     {ok, search_results, _} = erlduck:search(<<"duckduckgo">>).
