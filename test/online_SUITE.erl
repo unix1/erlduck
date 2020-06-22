@@ -27,6 +27,7 @@ all() ->
 
 init_per_suite(Config) ->
     {ok, _} = application:ensure_all_started(erlduck),
+    erlduck:start(),
     Config.
 
 end_per_suite(_) ->
