@@ -33,7 +33,13 @@ make tests
 
 ## Play
 
-* after running in shell, you can play around with it
+* after running in shell, you can start the client pool
+
+```erlang
+erlduck:start().
+```
+
+* and then make requests using that pool
 
 ```erlang
 erlduck:get_answer(<<"what is erlang">>).
@@ -43,4 +49,16 @@ erlduck:get_answer(<<"what is erlang">>).
 
 ```erlang
 erlduck:search(<<"snakes on a plane">>).
+```
+
+* to start with custom options (map may contain one more keys below):
+
+```erlang
+erlduck:start(#{name => other, pool_size => 2, pool_overflow => 2}).
+```
+
+* and then use the custom pool for requests
+
+```erlang
+erlduck:get_answer(other, <<"snakes on a plane">>).
 ```
