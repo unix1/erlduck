@@ -20,10 +20,12 @@
 %% ============================================================================
 
 all() ->
-    [get_answer,
-     get_answer_named,
-     search,
-     search_named].
+    [
+        get_answer,
+        get_answer_named,
+        search,
+        search_named
+    ].
 
 init_per_suite(Config) ->
     {ok, _} = application:ensure_all_started(erlduck),

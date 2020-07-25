@@ -9,14 +9,18 @@
 %% Behavior callbacks
 -export([get_request/3]).
 
+-type answer() :: jsx:json_term().
+
 %% ============================================================================
 %% User functions
 %% ============================================================================
 
+-spec get_answer(atom(), binary()) -> answer().
 get_answer(ConnName, Question) ->
     {ok, search_results, AnswerRaw} = search(ConnName, Question),
     decode_response(AnswerRaw).
 
+-spec search(atom(), binary()) -> {ok, search_results, answer()}.
 search(ConnName, SearchTerm) ->
     {ok, 200, _, ResponseBody} =
         httpclient_service:request(ConnName, {search, [SearchTerm]}),
@@ -38,5 +42,6 @@ get_request(search, [SearchTerm], _Token) ->
 %% Internal functions
 %% ============================================================================
 
+-spec decode_response(binary()) -> answer().
 decode_response(RawResponse) ->
     jsx:decode(RawResponse, [return_maps]).
