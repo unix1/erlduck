@@ -3,10 +3,9 @@
 %% User functions
 -export([start/0]).
 -export([start/1]).
--export([get_answer/1]).
--export([get_answer/2]).
--export([search/1]).
--export([search/2]).
+-export([answer/1]).
+-export([answer/2]).
+-export([answer/3]).
 
 -type connection_settings() :: #{
     name := atom(),
@@ -21,12 +20,15 @@
 }.
 
 -type question() :: binary().
--type answer() :: erlduck_server:answer().
+-type answer() :: binary().
+-type format() :: json | xml.
 
 -export_type([question/0]).
 -export_type([answer/0]).
+-export_type([format/0]).
 
 -define(DEFAULT_CONN_NAME, default).
+-define(DEFAULT_FORMAT, json).
 -define(DEFAULT_POOL_SIZE, 1).
 -define(DEFAULT_POOL_OVERFLOW, 0).
 
@@ -45,21 +47,19 @@ start(Options) when is_map(Options) ->
     PoolOverflow = maps:get(pool_overflow, Options, ?DEFAULT_POOL_OVERFLOW),
     start_with_settings(#{name => Name, pool_size => PoolSize, pool_overflow => PoolOverflow}).
 
--spec get_answer(question()) -> answer().
-get_answer(Question) when is_binary(Question) ->
-    get_answer(?DEFAULT_CONN_NAME, Question).
+-spec answer(question()) -> {ok, answer()}.
+answer(Question) when is_binary(Question) ->
+    answer(?DEFAULT_CONN_NAME, Question, ?DEFAULT_FORMAT).
 
--spec get_answer(atom(), question()) -> answer().
-get_answer(Connection, Question) when is_atom(Connection), is_binary(Question) ->
-    erlduck_server:get_answer(Connection, Question).
+-spec answer(atom(), question() | format()) -> {ok, answer()}.
+answer(Connection, Question) when is_atom(Connection), is_binary(Question) ->
+    answer(Connection, Question, ?DEFAULT_FORMAT);
+answer(Question, Format) when is_binary(Question), is_atom(Format) ->
+    answer(?DEFAULT_CONN_NAME, Question, Format).
 
--spec search(question()) -> {ok, search_results, binary()}.
-search(Term) when is_binary(Term) ->
-    search(?DEFAULT_CONN_NAME, Term).
-
--spec search(atom(), question()) -> {ok, search_results, binary()}.
-search(Connection, Term) when is_atom(Connection), is_binary(Term) ->
-    erlduck_server:search(Connection, Term).
+-spec answer(atom(), question(), format()) -> {ok, answer()}.
+answer(Connection, Question, Format) when is_atom(Connection), is_binary(Question), is_atom(Format) ->
+    erlduck_server:answer(Connection, Question, Format).
 
 %% ============================================================================
 %% Internal functions

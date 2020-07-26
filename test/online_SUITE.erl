@@ -10,10 +10,8 @@
 -export([end_per_testcase/2]).
 
 %% Tests
--export([get_answer/1]).
--export([get_answer_named/1]).
--export([search/1]).
--export([search_named/1]).
+-export([answer/1]).
+-export([answer_named/1]).
 
 %% ============================================================================
 %% ct functions
@@ -21,10 +19,8 @@
 
 all() ->
     [
-        get_answer,
-        get_answer_named,
-        search,
-        search_named
+        answer,
+        answer_named
     ].
 
 init_per_suite(Config) ->
@@ -46,18 +42,14 @@ end_per_testcase(_, _Config) ->
 %% Tests
 %% ============================================================================
 
-get_answer(_) ->
-    Result = erlduck:get_answer(<<"duckduckgo">>),
+answer(_) ->
+    {ok, Response} = erlduck:answer(<<"duckduckgo">>),
+    Result = jsx:decode(Response, [return_maps]),
     true = is_binary(maps:get(<<"Answer">>, Result)),
     true = is_binary(maps:get(<<"Abstract">>, Result)).
 
-get_answer_named(_) ->
-    Result = erlduck:get_answer(default, <<"duckduckgo">>),
+answer_named(_) ->
+    {ok, Response} = erlduck:answer(default, <<"duckduckgo">>),
+    Result = jsx:decode(Response, [return_maps]),
     true = is_binary(maps:get(<<"Answer">>, Result)),
     true = is_binary(maps:get(<<"Abstract">>, Result)).
-
-search(_) ->
-    {ok, search_results, _} = erlduck:search(<<"duckduckgo">>).
-
-search_named(_) ->
-    {ok, search_results, _} = erlduck:search(default, <<"duckduckgo">>).

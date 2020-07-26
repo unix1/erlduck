@@ -3,45 +3,51 @@
 -behavior(httpclient_service_handler).
 
 %% User functions
--export([get_answer/2]).
--export([search/2]).
+-export([answer/3]).
 
 %% Behavior callbacks
 -export([get_request/3]).
 
--type answer() :: jsx:json_term().
+-type search() :: #{
+    term := erlduck:question(),
+    format := erlduck:format()
+}.
+
+-define(DEFAULT_FORMAT, json).
 
 %% ============================================================================
 %% User functions
 %% ============================================================================
 
--spec get_answer(atom(), binary()) -> answer().
-get_answer(ConnName, Question) ->
-    {ok, search_results, AnswerRaw} = search(ConnName, Question),
-    decode_response(AnswerRaw).
-
--spec search(atom(), binary()) -> {ok, search_results, answer()}.
-search(ConnName, SearchTerm) ->
+-spec answer(atom(), binary(), erlduck:format()) -> {ok, erlduck:answer()}.
+answer(ConnName, Term, Format) ->
+    Search = #{
+        term => Term,
+        format => Format
+    },
     {ok, 200, _, ResponseBody} =
-        httpclient_service:request(ConnName, {search, [SearchTerm]}),
-    {ok, search_results, ResponseBody}.
+        httpclient_service:request(ConnName, {search, [Search]}),
+    {ok, ResponseBody}.
 
 %% ============================================================================
 %% Behavior callbacks
 %% ============================================================================
 
-get_request(search, [SearchTerm], _Token) ->
+-spec get_request(atom(), [search()], term) -> {ok, term()}.
+get_request(search, [#{term := Term, format := Format}], _Token) ->
     Headers = [],
     Path = <<"/">>,
-    Params = [{<<"q">>, SearchTerm},
-              {<<"format">>, <<"json">>},
-              {<<"t">>, <<"erlduck">>}],
+    Params = [
+        {<<"q">>, Term},
+        {<<"format">>, response_format(Format)},
+        {<<"t">>, <<"erlduck">>}
+    ],
     {ok, httpclient_req:new(get, Headers, Path, Params)}.
 
 %% ============================================================================
 %% Internal functions
 %% ============================================================================
 
--spec decode_response(binary()) -> answer().
-decode_response(RawResponse) ->
-    jsx:decode(RawResponse, [return_maps]).
+-spec response_format(erlduck:format()) -> binary().
+response_format(json) -> <<"json">>;
+response_format(xml) -> <<"xml">>.
