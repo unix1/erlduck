@@ -36,29 +36,35 @@ make tests
 * after running in shell, you can start the client pool
 
 ```erlang
-erlduck:start().
+ok = erlduck:start().
 ```
 
 * and then make requests using that pool
 
 ```erlang
-erlduck:get_answer(<<"what is erlang">>).
+{ok, Response} = erlduck:answer(<<"what is erlang">>).
 ```
 
-* to see the raw undecoded json response
+* by default the response will be JSON binary. To use XML instead
 
 ```erlang
-erlduck:search(<<"snakes on a plane">>).
+{ok, Response} = erlduck:answer(<<"what is erlang">>, xml).
 ```
 
 * to start with custom options (map may contain one more keys below):
 
 ```erlang
-erlduck:start(#{name => other, pool_size => 2, pool_overflow => 2}).
+ok = erlduck:start(#{name => other, pool_size => 2, pool_overflow => 2}).
 ```
 
 * and then use the custom pool for requests
 
 ```erlang
-erlduck:get_answer(other, <<"snakes on a plane">>).
+{ok, Response} = erlduck:answer(other, <<"snakes on a plane">>).
+```
+
+* you can still return the response in XML
+
+```erlang
+{ok, Response} = erlduck:answer(other, <<"snakes on a plane">>, xml).
 ```
